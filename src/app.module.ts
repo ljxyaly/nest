@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
-import { UserModule } from './user/user.module';
+import { Module } from '@nestjs/common'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { DataSource } from 'typeorm'
+import { UserModule } from './user/user.module'
 
 @Module({
   imports: [
@@ -17,12 +17,12 @@ import { UserModule } from './user/user.module';
       // entities: [],
       // entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
-      autoLoadEntities: true,
+      autoLoadEntities: true
     }),
-    UserModule,
+    UserModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}

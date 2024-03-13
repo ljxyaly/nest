@@ -1,14 +1,14 @@
 // update-user.dto.ts
 
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateUserDto } from './create-user.dto';
+import { PartialType } from '@nestjs/mapped-types'
+import { CreateUserDto } from './create-user.dto'
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
-  name: string;
+  name: string
 
-  sex: string;
+  sex: string
 
-  createTime: Date;
+  createTime: Date
 
-  updateTime: Date;
+  updateTime: Date
 }
