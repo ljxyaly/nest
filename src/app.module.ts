@@ -4,9 +4,19 @@ import { AppService } from './app.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 import { UserModule } from './user/user.module'
+import { ConfigModule } from '@nestjs/config'
+// import { PrismaService } from './prisma/prisma.service'
+import { PostModule } from './post/post.module'
+import { PrismaModule } from 'nestjs-prisma'
 
 @Module({
   imports: [
+    PrismaModule.forRoot({
+      isGlobal: true
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -19,7 +29,8 @@ import { UserModule } from './user/user.module'
       synchronize: true,
       autoLoadEntities: true
     }),
-    UserModule
+    UserModule,
+    PostModule
   ],
   controllers: [AppController],
   providers: [AppService]
