@@ -26,35 +26,40 @@
 // }
 
 import { Injectable } from '@nestjs/common'
-// import { PrismaService } from '../prisma.service'
-import { ba_admin, Prisma } from '@prisma/client'
-import { PrismaService } from 'nestjs-prisma'
+import { PrismaService } from '../prisma/prisma.service'
+import { odr_member, Prisma } from '@prisma/client'
+// import { PrismaService } from 'nestjs-prisma'
 
 @Injectable()
 export class PostService {
   constructor(private prisma: PrismaService) {}
+  // constructor(private prisma) {}
 
-  async findOne(ba_adminWhereUniqueInput: Prisma.ba_adminWhereUniqueInput): Promise<ba_admin | null> {
-    return this.prisma.ba_admin.findUnique({
-      where: ba_adminWhereUniqueInput
+  async findOne(odr_memberWhereUniqueInput: Prisma.odr_memberWhereUniqueInput): Promise<odr_member | null> {
+    return this.prisma.odr_member.findUnique({
+      where: odr_memberWhereUniqueInput
     })
   }
 
   async findAll(params: {
     skip?: number
     take?: number
-    cursor?: Prisma.ba_adminWhereUniqueInput
-    where?: Prisma.ba_adminWhereInput
-    orderBy?: Prisma.ba_adminOrderByWithRelationInput
-  }): Promise<ba_admin[]> {
+    cursor?: Prisma.odr_memberWhereUniqueInput
+    where?: Prisma.odr_memberWhereInput
+    orderBy?: Prisma.odr_memberOrderByWithRelationInput
+  }): Promise<odr_member[]> {
     const { skip, take, cursor, where, orderBy } = params
-    return this.prisma.ba_admin.findMany({
-      skip,
-      take
-      // cursor,
-      // where,
-      // orderBy
+    return this.prisma.prismaExtended.odr_member.paginate().withPages({
+      limit: 10,
+      page: 2
     })
+    // .findMany({
+    //   skip,
+    //   take
+    //   // cursor,
+    //   // where,
+    //   // orderBy
+    // })
   }
 
   // async createPost(data: Prisma.PostCreateInput): Promise<Post> {

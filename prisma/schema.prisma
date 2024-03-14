@@ -8,417 +8,48 @@ datasource db {
 }
 
 model user {
-  id         Int      @id @default(autoincrement())
-  name       String   @db.VarChar(255)
-  sex        String   @db.VarChar(255)
-  createTime DateTime @db.DateTime(0)
-  updateTime DateTime @db.DateTime(0)
+  id    Int     @id @default(autoincrement())
+  email String  @unique(map: "User_email_key")
+  name  String?
+  post  post[]
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_admin {
-  id              Int             @id @default(autoincrement()) @db.UnsignedInt
-  username        String          @unique(map: "username") @default("") @db.VarChar(20)
-  nickname        String          @default("") @db.VarChar(50)
-  avatar          String          @default("") @db.VarChar(255)
-  email           String          @default("") @db.VarChar(50)
-  mobile          String          @default("") @db.VarChar(11)
-  login_failure   Int             @default(0) @db.UnsignedTinyInt
-  last_login_time BigInt?         @db.UnsignedBigInt
-  last_login_ip   String          @default("") @db.VarChar(50)
-  password        String          @default("") @db.VarChar(32)
-  salt            String          @default("") @db.VarChar(30)
-  motto           String          @default("") @db.VarChar(255)
-  status          ba_admin_status @default(dbgenerated("1"))
-  update_time     BigInt?         @db.UnsignedBigInt
-  create_time     BigInt?         @db.UnsignedBigInt
+model odr_member {
+  id                        Int     @id @default(autoincrement())
+  nick                      String? @default("") @db.VarChar(100)
+  phone                     String? @unique(map: "idx_phone") @default("") @db.VarChar(100)
+  add_time                  String? @default("") @db.VarChar(200)
+  login_time                String? @default("") @db.VarChar(200)
+  status                    Int     @default(1) @db.TinyInt
+  pic                       String? @db.Text
+  pass                      String? @default("") @db.VarChar(200)
+  token                     String? @default("") @db.VarChar(200)
+  check_status              Int     @default(1) @db.TinyInt
+  coup_status               Int     @default(1) @db.TinyInt
+  openid                    String? @default("") @db.VarChar(255)
+  pc_openid                 String? @db.VarChar(255)
+  unionid                   String? @db.VarChar(255)
+  type                      Int?    @db.TinyInt
+  openid_wxfb5fab15d9ba47d4 String? @db.VarChar(255)
+  openid_wx45d117ccbfc4417b String? @db.VarChar(255)
+  openid_wxf63231f961f658bf String? @db.VarChar(255)
+  signup_ip                 String? @default("") @db.VarChar(255)
+  login_ip                  String? @default("") @db.VarChar(255)
+  tags                      Json?
+
+  @@index([openid_wx45d117ccbfc4417b], map: "idx_openid_wx45d117ccbfc4417b")
+  @@index([openid_wxf63231f961f658bf], map: "idx_openid_wxf63231f961f658bf")
+  @@index([openid_wxfb5fab15d9ba47d4], map: "idx_openid_wxfb5fab15d9ba47d4")
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_admin_group {
-  id          Int                   @id @default(autoincrement()) @db.UnsignedInt
-  pid         Int                   @default(0) @db.UnsignedInt
-  name        String                @default("") @db.VarChar(100)
-  rules       String?               @db.Text
-  status      ba_admin_group_status @default(dbgenerated("1"))
-  update_time BigInt?               @db.UnsignedBigInt
-  create_time BigInt?               @db.UnsignedBigInt
-}
+model post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean? @default(false)
+  authorId  Int?
+  user      user?    @relation(fields: [authorId], references: [id], map: "Post_authorId_fkey")
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_admin_group_access {
-  uid      Int @db.UnsignedInt
-  group_id Int @db.UnsignedInt
-
-  @@index([group_id], map: "group_id")
-  @@index([uid], map: "uid")
-  @@ignore
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_admin_log {
-  id          Int     @id @default(autoincrement()) @db.UnsignedInt
-  admin_id    Int     @default(0) @db.UnsignedInt
-  username    String  @default("") @db.VarChar(20)
-  url         String  @default("") @db.VarChar(1500)
-  title       String  @default("") @db.VarChar(100)
-  data        String? @db.LongText
-  ip          String  @default("") @db.VarChar(50)
-  useragent   String  @default("") @db.VarChar(255)
-  create_time BigInt? @db.UnsignedBigInt
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_admin_rule {
-  id          Int                      @id @default(autoincrement()) @db.UnsignedInt
-  pid         Int                      @default(0) @db.UnsignedInt
-  type        ba_admin_rule_type       @default(menu)
-  title       String                   @default("") @db.VarChar(50)
-  name        String                   @default("") @db.VarChar(50)
-  path        String                   @default("") @db.VarChar(100)
-  icon        String                   @default("") @db.VarChar(50)
-  menu_type   ba_admin_rule_menu_type?
-  url         String                   @default("") @db.VarChar(255)
-  component   String                   @default("") @db.VarChar(100)
-  keepalive   Int                      @default(0) @db.UnsignedTinyInt
-  extend      ba_admin_rule_extend     @default(none)
-  remark      String                   @default("") @db.VarChar(255)
-  weigh       Int                      @default(0)
-  status      ba_admin_rule_status     @default(dbgenerated("1"))
-  update_time BigInt?                  @db.UnsignedBigInt
-  create_time BigInt?                  @db.UnsignedBigInt
-
-  @@index([pid], map: "pid")
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_area {
-  id        Int     @id @default(autoincrement()) @db.UnsignedInt
-  pid       Int?    @db.UnsignedInt
-  shortname String? @db.VarChar(100)
-  name      String? @db.VarChar(100)
-  mergename String? @db.VarChar(255)
-  level     Int?    @db.UnsignedTinyInt
-  pinyin    String? @db.VarChar(100)
-  code      String? @db.VarChar(100)
-  zip       String? @db.VarChar(100)
-  first     String? @db.VarChar(50)
-  lng       String? @db.VarChar(50)
-  lat       String? @db.VarChar(50)
-
-  @@index([pid], map: "pid")
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_attachment {
-  id               Int     @id @default(autoincrement()) @db.UnsignedInt
-  topic            String  @default("") @db.VarChar(20)
-  admin_id         Int     @default(0) @db.UnsignedInt
-  user_id          Int     @default(0) @db.UnsignedInt
-  url              String  @default("") @db.VarChar(255)
-  width            Int     @default(0) @db.UnsignedInt
-  height           Int     @default(0) @db.UnsignedInt
-  name             String  @default("") @db.VarChar(100)
-  size             Int     @default(0) @db.UnsignedInt
-  mimetype         String  @default("") @db.VarChar(100)
-  quote            Int     @default(0) @db.UnsignedInt
-  storage          String  @default("") @db.VarChar(50)
-  sha1             String  @default("") @db.VarChar(40)
-  create_time      BigInt? @db.UnsignedBigInt
-  last_upload_time BigInt? @db.UnsignedBigInt
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_captcha {
-  key         String  @id @default("") @db.VarChar(32)
-  code        String  @default("") @db.VarChar(32)
-  captcha     String? @db.Text
-  create_time BigInt? @db.UnsignedBigInt
-  expire_time BigInt? @db.UnsignedBigInt
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_config {
-  id        Int     @id @default(autoincrement()) @db.UnsignedInt
-  name      String  @unique(map: "name") @default("") @db.VarChar(30)
-  group     String  @default("") @db.VarChar(30)
-  title     String  @default("") @db.VarChar(50)
-  tip       String  @default("") @db.VarChar(100)
-  type      String  @default("") @db.VarChar(30)
-  value     String? @db.LongText
-  content   String? @db.LongText
-  rule      String  @default("") @db.VarChar(100)
-  extend    String  @default("") @db.VarChar(255)
-  allow_del Int     @default(0) @db.UnsignedTinyInt
-  weigh     Int     @default(0)
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_crud_log {
-  id          Int                @id @default(autoincrement()) @db.UnsignedInt
-  table_name  String             @default("") @db.VarChar(200)
-  table       String?            @db.Text
-  fields      String?            @db.Text
-  status      ba_crud_log_status @default(start)
-  create_time BigInt?            @db.UnsignedBigInt
-}
-
-model ba_migrations {
-  version        BigInt   @id
-  migration_name String?  @db.VarChar(100)
-  start_time     DateTime @default(now()) @db.Timestamp(0)
-  end_time       DateTime @default(now()) @db.Timestamp(0)
-  breakpoint     Boolean  @default(false)
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_security_data_recycle {
-  id            Int                             @id @default(autoincrement()) @db.UnsignedInt
-  name          String                          @default("") @db.VarChar(50)
-  controller    String                          @default("") @db.VarChar(100)
-  controller_as String                          @default("") @db.VarChar(100)
-  data_table    String                          @default("") @db.VarChar(100)
-  primary_key   String                          @default("") @db.VarChar(50)
-  status        ba_security_data_recycle_status @default(dbgenerated("1"))
-  update_time   BigInt?                         @db.UnsignedBigInt
-  create_time   BigInt?                         @db.UnsignedBigInt
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_security_data_recycle_log {
-  id          Int     @id @default(autoincrement()) @db.UnsignedInt
-  admin_id    Int     @default(0) @db.UnsignedInt
-  recycle_id  Int     @default(0) @db.UnsignedInt
-  data        String? @db.Text
-  data_table  String  @default("") @db.VarChar(100)
-  primary_key String  @default("") @db.VarChar(50)
-  is_restore  Int     @default(0) @db.UnsignedTinyInt
-  ip          String  @default("") @db.VarChar(50)
-  useragent   String  @default("") @db.VarChar(255)
-  create_time BigInt? @db.UnsignedBigInt
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_security_sensitive_data {
-  id            Int                               @id @default(autoincrement()) @db.UnsignedInt
-  name          String                            @default("") @db.VarChar(50)
-  controller    String                            @default("") @db.VarChar(100)
-  controller_as String                            @default("") @db.VarChar(100)
-  data_table    String                            @default("") @db.VarChar(100)
-  primary_key   String                            @default("") @db.VarChar(50)
-  data_fields   String?                           @db.Text
-  status        ba_security_sensitive_data_status @default(dbgenerated("1"))
-  update_time   BigInt?                           @db.UnsignedBigInt
-  create_time   BigInt?                           @db.UnsignedBigInt
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_security_sensitive_data_log {
-  id           Int     @id @default(autoincrement()) @db.UnsignedInt
-  admin_id     Int     @default(0) @db.UnsignedInt
-  sensitive_id Int     @default(0) @db.UnsignedInt
-  data_table   String  @default("") @db.VarChar(100)
-  primary_key  String  @default("") @db.VarChar(50)
-  data_field   String  @default("") @db.VarChar(50)
-  data_comment String  @default("") @db.VarChar(50)
-  id_value     Int     @default(0)
-  before       String? @db.Text
-  after        String? @db.Text
-  ip           String  @default("") @db.VarChar(50)
-  useragent    String  @default("") @db.VarChar(255)
-  is_rollback  Int     @default(0) @db.UnsignedTinyInt
-  create_time  BigInt? @db.UnsignedBigInt
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_test_build {
-  id            Int                  @id @default(autoincrement()) @db.UnsignedInt
-  title         String               @default("") @db.VarChar(100)
-  keyword_rows  String               @default("") @db.VarChar(100)
-  content       String?              @db.Text
-  views         Int                  @default(0) @db.UnsignedInt
-  likes         Int                  @default(0) @db.UnsignedInt
-  dislikes      Int                  @default(0) @db.UnsignedInt
-  note_textarea String               @default("") @db.VarChar(100)
-  status        ba_test_build_status @default(dbgenerated("1"))
-  weigh         Int                  @default(0)
-  update_time   BigInt?              @db.UnsignedBigInt
-  create_time   BigInt?              @db.UnsignedBigInt
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_token {
-  token       String  @id @default("") @db.VarChar(50)
-  type        String  @default("") @db.VarChar(15)
-  user_id     Int     @default(0) @db.UnsignedInt
-  create_time BigInt? @db.UnsignedBigInt
-  expire_time BigInt? @db.UnsignedBigInt
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_user {
-  id              Int       @id @default(autoincrement()) @db.UnsignedInt
-  group_id        Int       @default(0) @db.UnsignedInt
-  username        String    @unique(map: "username") @default("") @db.VarChar(32)
-  nickname        String    @default("") @db.VarChar(50)
-  email           String    @unique(map: "email") @default("") @db.VarChar(50)
-  mobile          String    @unique(map: "mobile") @default("") @db.VarChar(11)
-  avatar          String    @default("") @db.VarChar(255)
-  gender          Int       @default(0) @db.UnsignedTinyInt
-  birthday        DateTime? @db.Date
-  money           Int       @default(0) @db.UnsignedInt
-  score           Int       @default(0) @db.UnsignedInt
-  last_login_time BigInt?   @db.UnsignedBigInt
-  last_login_ip   String    @default("") @db.VarChar(50)
-  login_failure   Int       @default(0) @db.UnsignedTinyInt
-  join_ip         String    @default("") @db.VarChar(50)
-  join_time       BigInt?   @db.UnsignedBigInt
-  motto           String    @default("") @db.VarChar(255)
-  password        String    @default("") @db.VarChar(32)
-  salt            String    @default("") @db.VarChar(30)
-  status          String    @default("") @db.VarChar(30)
-  update_time     BigInt?   @db.UnsignedBigInt
-  create_time     BigInt?   @db.UnsignedBigInt
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_user_group {
-  id          Int                  @id @default(autoincrement()) @db.UnsignedInt
-  name        String               @default("") @db.VarChar(50)
-  rules       String?              @db.Text
-  status      ba_user_group_status @default(dbgenerated("1"))
-  update_time BigInt?              @db.UnsignedBigInt
-  create_time BigInt?              @db.UnsignedBigInt
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_user_money_log {
-  id          Int     @id @default(autoincrement()) @db.UnsignedInt
-  user_id     Int     @default(0) @db.UnsignedInt
-  money       Int     @default(0)
-  before      Int     @default(0)
-  after       Int     @default(0)
-  memo        String  @default("") @db.VarChar(255)
-  create_time BigInt? @db.UnsignedBigInt
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_user_rule {
-  id             Int                    @id @default(autoincrement()) @db.UnsignedInt
-  pid            Int                    @default(0) @db.UnsignedInt
-  type           ba_user_rule_type      @default(menu)
-  title          String                 @default("") @db.VarChar(50)
-  name           String                 @default("") @db.VarChar(50)
-  path           String                 @default("") @db.VarChar(100)
-  icon           String                 @default("") @db.VarChar(50)
-  menu_type      ba_user_rule_menu_type @default(tab)
-  url            String                 @default("") @db.VarChar(255)
-  component      String                 @default("") @db.VarChar(100)
-  no_login_valid Int                    @default(0) @db.UnsignedTinyInt
-  extend         ba_user_rule_extend    @default(none)
-  remark         String                 @default("") @db.VarChar(255)
-  weigh          Int                    @default(0)
-  status         ba_user_rule_status    @default(dbgenerated("1"))
-  update_time    BigInt?                @db.UnsignedBigInt
-  create_time    BigInt?                @db.UnsignedBigInt
-
-  @@index([pid], map: "pid")
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model ba_user_score_log {
-  id          Int     @id @default(autoincrement()) @db.UnsignedInt
-  user_id     Int     @default(0) @db.UnsignedInt
-  score       Int     @default(0)
-  before      Int     @default(0)
-  after       Int     @default(0)
-  memo        String  @default("") @db.VarChar(255)
-  create_time BigInt? @db.UnsignedBigInt
-}
-
-enum ba_admin_rule_type {
-  menu_dir
-  menu
-  button
-}
-
-enum ba_user_rule_type {
-  route
-  menu_dir
-  menu
-  nav_user_menu
-  nav
-  button
-}
-
-enum ba_user_group_status {
-  one
-  two
-}
-
-enum ba_admin_group_status {
-  one
-  two
-}
-
-enum ba_crud_log_status {
-  delete
-  success
-  error
-  start
-}
-
-enum ba_security_data_recycle_status {
-  one
-  two
-}
-
-enum ba_admin_rule_menu_type {
-  tab
-  link
-  iframe
-}
-
-enum ba_security_sensitive_data_status {
-  one
-  two
-}
-
-enum ba_user_rule_menu_type {
-  tab
-  link
-  iframe
-}
-
-enum ba_test_build_status {
-  one
-  two
-}
-
-enum ba_admin_rule_extend {
-  none
-  add_rules_only
-  add_menu_only
-}
-
-enum ba_user_rule_extend {
-  none
-  add_rules_only
-  add_menu_only
-}
-
-enum ba_admin_status {
-  one
-  two
-}
-
-enum ba_admin_rule_status {
-  one
-  two
-}
-
-enum ba_user_rule_status {
-  one
-  two
+  @@index([authorId], map: "Post_authorId_fkey")
 }
