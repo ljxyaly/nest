@@ -34,13 +34,13 @@ import { PrismaService } from 'nestjs-prisma'
 export class PostService {
   constructor(private prisma: PrismaService) {}
 
-  async post(ba_adminWhereUniqueInput: Prisma.ba_adminWhereUniqueInput): Promise<ba_admin | null> {
+  async findOne(ba_adminWhereUniqueInput: Prisma.ba_adminWhereUniqueInput): Promise<ba_admin | null> {
     return this.prisma.ba_admin.findUnique({
       where: ba_adminWhereUniqueInput
     })
   }
 
-  async posts(params: {
+  async findAll(params: {
     skip?: number
     take?: number
     cursor?: Prisma.ba_adminWhereUniqueInput
@@ -50,10 +50,10 @@ export class PostService {
     const { skip, take, cursor, where, orderBy } = params
     return this.prisma.ba_admin.findMany({
       skip,
-      take,
-      cursor,
-      where,
-      orderBy
+      take
+      // cursor,
+      // where,
+      // orderBy
     })
   }
 

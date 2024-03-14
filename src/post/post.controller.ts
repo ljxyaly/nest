@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
+import { Controller, Get, Req, Post, Body, Patch, Param, Delete, Version, Query } from '@nestjs/common'
 import { PostService } from './post.service'
 // import { CreatePostDto } from './dto/create-post.dto'
+import { CommonPostDto } from './dto/common.dto'
 // import { UpdatePostDto } from './dto/update-post.dto'
 // import { Post as PostModel } from '@prisma/client'
 
@@ -13,14 +14,14 @@ export class PostController {
   //   return this.postService.create(createPostDto)
   // }
 
-  // @Get()
-  // findAll() {
-  //   return this.postService.findAll()
-  // }
+  @Post('list')
+  findAll(@Body() body) {
+    return this.postService.findAll(body)
+  }
 
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<unknown> {
-    return this.postService.post({ id: Number(id) })
+  @Post('detail')
+  findOne(@Body() body: CommonPostDto): Promise<unknown> {
+    return this.postService.findOne(body)
   }
 
   // @Patch(':id')
