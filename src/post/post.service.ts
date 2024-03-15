@@ -1,65 +1,35 @@
-// import { Injectable } from '@nestjs/common'
-// import { CreatePostDto } from './dto/create-post.dto'
-// import { UpdatePostDto } from './dto/update-post.dto'
-
-// @Injectable()
-// export class PostService {
-//   create(createPostDto: CreatePostDto) {
-//     return 'This action adds a new post'
-//   }
-
-//   findAll() {
-//     return `This action returns all post`
-//   }
-
-//   findOne(id: number) {
-//     return `This action returns a #${id} post`
-//   }
-
-//   update(id: number, updatePostDto: UpdatePostDto) {
-//     return `This action updates a #${id} post`
-//   }
-
-//   remove(id: number) {
-//     return `This action removes a #${id} post`
-//   }
-// }
-
-import { Injectable } from '@nestjs/common'
-import { PrismaService } from '../prisma/prisma.service'
+import { Injectable, Inject } from '@nestjs/common'
 import { odr_member, Prisma } from '@prisma/client'
-// import { PrismaService } from 'nestjs-prisma'
+import { CustomPrismaService } from 'nestjs-prisma'
+import { type ExtendedPrismaClient } from '@/common/prisma/prisma.extension'
 
 @Injectable()
 export class PostService {
-  constructor(private prisma: PrismaService) {}
-  // constructor(private prisma) {}
+  constructor(
+    @Inject('PrismaService')
+    private prismaService: CustomPrismaService<ExtendedPrismaClient>
+  ) {}
 
   async findOne(odr_memberWhereUniqueInput: Prisma.odr_memberWhereUniqueInput): Promise<odr_member | null> {
-    return this.prisma.odr_member.findUnique({
+    return this.prismaService.client.odr_member.findUnique({
       where: odr_memberWhereUniqueInput
     })
   }
 
-  async findAll(params: {
-    skip?: number
-    take?: number
-    cursor?: Prisma.odr_memberWhereUniqueInput
-    where?: Prisma.odr_memberWhereInput
-    orderBy?: Prisma.odr_memberOrderByWithRelationInput
-  }): Promise<odr_member[]> {
-    const { skip, take, cursor, where, orderBy } = params
-    return this.prisma.prismaExtended.odr_member.paginate().withPages({
-      limit: 10,
-      page: 2
+  async findAll(params: { page?: number; limit?: number }): Promise<unknown> {
+    // odr_member[]
+    const { page, limit } = params
+    const [list, meta] = await this.prismaService.client.odr_member.paginate().withPages({
+      page,
+      limit,
+      includePageCount: true
     })
-    // .findMany({
-    //   skip,
-    //   take
-    //   // cursor,
-    //   // where,
-    //   // orderBy
-    // })
+    return {
+      list,
+      total: meta.totalCount,
+      page,
+      limit
+    }
   }
 
   // async createPost(data: Prisma.PostCreateInput): Promise<Post> {
