@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsDefined, Length } from 'class-validator'
 
 // create-user.dto.ts
-export class CommonPostDto {
+export class DetailPostDto {
   @IsDefined()
   @IsNotEmpty()
   id: number
