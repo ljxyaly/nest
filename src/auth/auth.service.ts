@@ -1,22 +1,30 @@
 import { Injectable } from '@nestjs/common'
-import { UsersService } from '@/users/users.service'
+import { UserService } from '@/user/user.service'
 import { JwtService } from '@nestjs/jwt'
+import * as bcrypt from 'bcrypt'
+import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService, private jwtService: JwtService) {}
+  constructor(private jwtService: JwtService, private configService: ConfigService, private userService: UserService) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username)
-    if (user && user.password === pass) {
-      const { password, ...result } = user
-      return result
+  async validateUser(username: string, password: string): Promise<any> {
+    const user = await this.userService.findOne(username)
+    if (!user) return null
+    const { password: db_password } = user
+    // console.log(typeof this.configService.get('BCRYPT_HASH_ROUNDS'))
+    // const hash = await bcrypt.hash(password, 10)
+    const isMatch = await bcrypt.compare(password, db_password)
+    if (isMatch) {
+      return {
+        id: user.id,
+        username: user.username
+      }
     }
-    return null
   }
 
   async login(user: any) {
-    const payload = { username: user.username, sub: user.userId }
+    const payload = { username: user.username, id: user.id }
     return {
       access_token: this.jwtService.sign(payload)
     }

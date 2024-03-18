@@ -7,49 +7,50 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  id    Int     @id @default(autoincrement())
-  email String  @unique(map: "User_email_key")
-  name  String?
-  post  post[]
-}
-
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model odr_member {
-  id                        Int     @id @default(autoincrement())
-  nick                      String? @default("") @db.VarChar(100)
-  phone                     String? @unique(map: "idx_phone") @default("") @db.VarChar(100)
-  add_time                  String? @default("") @db.VarChar(200)
-  login_time                String? @default("") @db.VarChar(200)
-  status                    Int     @default(1) @db.TinyInt
-  pic                       String? @db.Text
-  pass                      String? @default("") @db.VarChar(200)
-  token                     String? @default("") @db.VarChar(200)
-  check_status              Int     @default(1) @db.TinyInt
-  coup_status               Int     @default(1) @db.TinyInt
-  openid                    String? @default("") @db.VarChar(255)
-  pc_openid                 String? @db.VarChar(255)
-  unionid                   String? @db.VarChar(255)
-  type                      Int?    @db.TinyInt
-  openid_wxfb5fab15d9ba47d4 String? @db.VarChar(255)
-  openid_wx45d117ccbfc4417b String? @db.VarChar(255)
-  openid_wxf63231f961f658bf String? @db.VarChar(255)
-  signup_ip                 String? @default("") @db.VarChar(255)
-  login_ip                  String? @default("") @db.VarChar(255)
-  tags                      Json?
+// model odr_member {
+//   id                        Int     @id @default(autoincrement())
+//   nick                      String? @default("") @db.VarChar(100)
+//   phone                     String? @unique(map: "idx_phone") @default("") @db.VarChar(100)
+//   add_time                  String? @default("") @db.VarChar(200)
+//   login_time                String? @default("") @db.VarChar(200)
+//   status                    Int     @default(1) @db.TinyInt
+//   pic                       String? @db.Text
+//   pass                      String? @default("") @db.VarChar(200)
+//   token                     String? @default("") @db.VarChar(200)
+//   check_status              Int     @default(1) @db.TinyInt
+//   coup_status               Int     @default(1) @db.TinyInt
+//   openid                    String? @default("") @db.VarChar(255)
+//   pc_openid                 String? @db.VarChar(255)
+//   unionid                   String? @db.VarChar(255)
+//   type                      Int?    @db.TinyInt
+//   openid_wxfb5fab15d9ba47d4 String? @db.VarChar(255)
+//   openid_wx45d117ccbfc4417b String? @db.VarChar(255)
+//   openid_wxf63231f961f658bf String? @db.VarChar(255)
+//   signup_ip                 String? @default("") @db.VarChar(255)
+//   login_ip                  String? @default("") @db.VarChar(255)
+//   tags                      Json?
 
-  @@index([openid_wx45d117ccbfc4417b], map: "idx_openid_wx45d117ccbfc4417b")
-  @@index([openid_wxf63231f961f658bf], map: "idx_openid_wxf63231f961f658bf")
-  @@index([openid_wxfb5fab15d9ba47d4], map: "idx_openid_wxfb5fab15d9ba47d4")
-}
+//   @@index([openid_wx45d117ccbfc4417b], map: "idx_openid_wx45d117ccbfc4417b")
+//   @@index([openid_wxf63231f961f658bf], map: "idx_openid_wxf63231f961f658bf")
+//   @@index([openid_wxfb5fab15d9ba47d4], map: "idx_openid_wxfb5fab15d9ba47d4")
+// }
 
-model post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean? @default(false)
-  authorId  Int?
-  user      user?    @relation(fields: [authorId], references: [id], map: "Post_authorId_fkey")
+// model post {
+//   id        Int      @id @default(autoincrement())
+//   title     String
+//   content   String?
+//   published Boolean? @default(false)
+//   authorId  Int?
+//   user      user?    @relation(fields: [authorId], references: [id], map: "Post_authorId_fkey")
 
-  @@index([authorId], map: "Post_authorId_fkey")
+//   @@index([authorId], map: "Post_authorId_fkey")
+// }
+
+model user {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique(map: "User_email_key")
+  username String  @unique(map: "username") @db.VarChar(100)
+  password String? @db.VarChar(100)
+  // post     post[]
 }

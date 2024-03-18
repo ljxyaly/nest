@@ -2,12 +2,13 @@ import { IsNotEmpty, IsDefined, IsNumber, IsInt, IsNegative, IsPositive } from '
 
 // create-user.dto.ts
 export class ListPostDto {
-  // @IsDefined({ message: '必填' })
-  // // @IsNotEmpty()
-  // @IsPositive({ message: '必须为正整数' })
+  @IsDefined()
+  @IsNotEmpty()
+  @IsPositive()
   page: number
 
   @IsDefined()
   @IsNotEmpty()
+  @IsPositive()
   limit: number
 }

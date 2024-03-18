@@ -1,0 +1,30 @@
+-- CreateTable
+CREATE TABLE `odr_member` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `nick` VARCHAR(100) NULL DEFAULT '',
+    `phone` VARCHAR(100) NULL DEFAULT '',
+    `add_time` VARCHAR(200) NULL DEFAULT '',
+    `login_time` VARCHAR(200) NULL DEFAULT '',
+    `status` TINYINT NOT NULL DEFAULT 1,
+    `pic` TEXT NULL,
+    `pass` VARCHAR(200) NULL DEFAULT '',
+    `token` VARCHAR(200) NULL DEFAULT '',
+    `check_status` TINYINT NOT NULL DEFAULT 1,
+    `coup_status` TINYINT NOT NULL DEFAULT 1,
+    `openid` VARCHAR(255) NULL DEFAULT '',
+    `pc_openid` VARCHAR(255) NULL,
+    `unionid` VARCHAR(255) NULL,
+    `type` TINYINT NULL,
+    `openid_wxfb5fab15d9ba47d4` VARCHAR(255) NULL,
+    `openid_wx45d117ccbfc4417b` VARCHAR(255) NULL,
+    `openid_wxf63231f961f658bf` VARCHAR(255) NULL,
+    `signup_ip` VARCHAR(255) NULL DEFAULT '',
+    `login_ip` VARCHAR(255) NULL DEFAULT '',
+    `tags` JSON NULL,
+
+    UNIQUE INDEX `idx_phone`(`phone`),
+    INDEX `idx_openid_wx45d117ccbfc4417b`(`openid_wx45d117ccbfc4417b`),
+    INDEX `idx_openid_wxf63231f961f658bf`(`openid_wxf63231f961f658bf`),
+    INDEX `idx_openid_wxfb5fab15d9ba47d4`(`openid_wxfb5fab15d9ba47d4`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
