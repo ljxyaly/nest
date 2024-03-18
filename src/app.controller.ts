@@ -7,15 +7,15 @@ import { LocalAuthGuard } from '@/auth/local-auth.guard'
 export class AppController {
   constructor(private authService: AuthService) {}
 
-  @UseGuards(LocalAuthGuard)
-  @Post('auth/login')
-  async login(@Request() req) {
-    return this.authService.login({ username: 'john', password: 'changeme' })
-  }
+  // @UseGuards(LocalAuthGuard)
+  // @Post('auth/login')
+  // async login(@Request() req) {
+  //   return this.authService.login({ username: 'john', password: 'changeme' })
+  // }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile() {
-    return { res: '登录通过' }
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Get('profile')
+  // getProfile() {
+  //   return { res: '登录通过' }
+  // }
 }

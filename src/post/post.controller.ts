@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Post, Body, Patch, Param, Delete, Version, Query, UseInterceptors, ParseIntPipe } from '@nestjs/common'
+import { Controller, Get, Req, Post, Body, Patch, Param, Delete, Version, Query, UseInterceptors, ParseIntPipe, UseGuards } from '@nestjs/common'
 import { PostService } from './post.service'
 // import { CreatePostDto } from './dto/create-post.dto'
 import { DetailPostDto } from './dto/detail-post.dto'
@@ -8,6 +8,7 @@ import { ListPostDto } from './dto/list-post.dto'
 
 @Controller({ path: 'post', version: '1' })
 export class PostController {
+  // , private authService: AuthService
   constructor(private readonly postService: PostService) {}
 
   // @Post()
@@ -17,12 +18,14 @@ export class PostController {
 
   @Post('list')
   findAll(@Body() body: ListPostDto) {
-    return this.postService.findAll(body)
+    // return this.postService.findAll(body)
+    return null
   }
 
   @Post('detail')
   findOne(@Body() body: DetailPostDto): Promise<unknown> {
-    return this.postService.findOne(body)
+    // return this.postService.findOne(body)
+    return null
   }
 
   // @Patch(':id')
