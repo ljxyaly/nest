@@ -34,7 +34,7 @@
 //   }
 // }
 
-import { Injectable, Inject } from '@nestjs/common'
+import { Injectable, Inject, NotFoundException } from '@nestjs/common'
 import { user, Prisma } from '@prisma/client'
 import { CustomPrismaService } from 'nestjs-prisma'
 import { type ExtendedPrismaClient } from '@/common/prisma/prisma.extension'
@@ -48,7 +48,14 @@ export class UserService {
     private prismaService: CustomPrismaService<ExtendedPrismaClient>
   ) {}
 
-  async findOnes(userWhereUniqueInput: Prisma.userWhereUniqueInput) {
+  async create(data: Prisma.userCreateInput): Promise<user> {
+    const res = await this.prismaService.client.user.create({ data })
+    // console.log('res', res)
+    return res
+    // throw new NotFoundException('Something bad happened', { cause: new Error(), description: 'Some error description' })
+  }
+
+  async findOne(userWhereUniqueInput: Prisma.userWhereUniqueInput) {
     return this.prismaService.client.user.findUnique({
       where: userWhereUniqueInput,
       select: {
@@ -58,7 +65,7 @@ export class UserService {
       }
     })
   }
-  async findOne(username: string): Promise<User | undefined> {
+  async authFindOne(username: string): Promise<User | undefined> {
     return await this.prismaService.client.user.findUnique({
       where: {
         username

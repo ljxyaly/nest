@@ -1,5 +1,6 @@
 import { ArgumentsHost, ExceptionFilter, HttpException, Catch } from '@nestjs/common'
 import { Response } from 'express'
+import dayjs from 'dayjs'
 
 @Catch(HttpException)
 export class HttpExecptionFilter implements ExceptionFilter {
@@ -8,13 +9,13 @@ export class HttpExecptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>()
     const status = exception.getStatus()
     const originResponse = exception.getResponse()
-    console.log(originResponse)
+    // console.log(originResponse)
     const message = exception.message
 
     response.status(status).json({
       code: status,
       message: originResponse['message'] || message || 'fail',
-      timestamp: new Date().getTime()
+      timestamp: dayjs().unix()
     })
   }
 }

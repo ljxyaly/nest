@@ -1,14 +1,18 @@
-import { IsNotEmpty, Length } from 'class-validator'
+import { IsDefined, IsNotEmpty, Length } from 'class-validator'
 
 // create-user.dto.ts
 export class CreateUserDto {
-  // @IsNotEmpty()
-  name: string
+  @IsDefined()
+  @IsNotEmpty()
+  @Length(4, 20, { message: '用户名长度必须在4到20之间' })
+  username: string
 
-  // @Length(10, 20, { message: '密码长度必须在10到20之间' })
-  sex: string
+  @IsDefined()
+  @IsNotEmpty()
+  @Length(8, 20, { message: '密码长度必须在8到20之间' })
+  password: string
 
-  createTime: Date
+  // createTime: Date
 
-  updateTime: Date
+  // updateTime: Date
 }

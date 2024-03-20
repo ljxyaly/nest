@@ -29,16 +29,16 @@ import { AllExceptionsFilter } from '@/common/filters/all-exception.filter'
   ],
   controllers: [AppController],
   providers: [
-    AppService,
-    {
-      provide: APP_FILTER,
-      useClass: AllExceptionsFilter
-    },
-    providePrismaClientExceptionFilter({
-      P2000: HttpStatus.BAD_REQUEST,
-      P2002: HttpStatus.CONFLICT,
-      P2025: HttpStatus.NOT_FOUND
-    })
+    AppService
+    // providePrismaClientExceptionFilter({
+    //   P2000: HttpStatus.BAD_REQUEST,
+    //   P2002: HttpStatus.CONFLICT,
+    //   P2025: HttpStatus.NOT_FOUND
+    // })
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: AllExceptionsFilter
+    // }
   ]
 })
 export class AppModule {}

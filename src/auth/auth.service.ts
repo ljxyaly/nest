@@ -9,7 +9,7 @@ export class AuthService {
   constructor(private jwtService: JwtService, private configService: ConfigService, private userService: UserService) {}
 
   async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.userService.findOne(username)
+    const user = await this.userService.authFindOne(username)
     if (!user) return null
     const { password: db_password } = user
     // console.log(typeof this.configService.get('BCRYPT_HASH_ROUNDS'))

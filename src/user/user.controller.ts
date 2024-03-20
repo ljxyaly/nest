@@ -7,6 +7,7 @@ import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
 import { AuthService } from '@/auth/auth.service'
 import { LocalAuthGuard } from '@/auth/local-auth.guard'
 import { LoginUserDto } from './dto/login-user.dto'
+import dayjs from 'dayjs'
 
 @Controller({ path: 'user', version: '1' })
 export class UserController {
@@ -21,7 +22,13 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Post('user_info')
   async getUserInfo(@Body() body) {
-    return this.userService.findOnes(body)
+    return this.userService.findOne(body)
+  }
+
+  @Post('register')
+  async userRegister(@Body() body: CreateUserDto) {
+    return await this.userService.create(Object.assign(body, { created_at: dayjs().unix() }))
+    // return await this.userService.create(Object.assign(body, { created_at: dayjs().unix() }))
   }
 
   // @UseGuards(JwtAuthGuard)
