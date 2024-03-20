@@ -4,6 +4,7 @@
 
 // import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common'
 // import { HttpException, HttpStatus } from '@nestjs/common'
+// import dayjs from 'dayjs'
 // @Catch()
 // export class AllExceptionsFilter implements ExceptionFilter {
 //   catch(exception: unknown, host: ArgumentsHost) {
@@ -14,7 +15,7 @@
 //     response.status(status).json({
 //       code: status,
 //       message,
-//       timestamp: new Date().getTime()
+//       timestamp: dayjs().unix()
 //     })
 //   }
 // }
@@ -26,6 +27,7 @@
 
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common'
 import { HttpAdapterHost } from '@nestjs/core'
+import dayjs from 'dayjs'
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
@@ -33,11 +35,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const { httpAdapter } = this.httpAdapterHost
     const ctx = host.switchToHttp()
     const httpStatus = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR
-    const message = exception instanceof HttpException ? exception.getResponse()['message'] || 'fasle' : exception
+    const message = exception instanceof HttpException ? exception.getResponse()['message'].toString() || 'fasle' : exception.toString()
     const responseBody = {
       code: httpStatus,
       message,
-      timestamp: new Date().getTime()
+      timestamp: dayjs().unix()
     }
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus)
   }

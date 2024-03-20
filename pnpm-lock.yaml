@@ -25,6 +25,7 @@ specifiers:
   bcrypt: ^5.1.1
   class-transformer: ^0.5.1
   class-validator: ^0.14.1
+  dayjs: ^1.11.10
   eslint: ^8.0.1
   eslint-config-prettier: ^8.3.0
   eslint-plugin-prettier: ^4.0.0
@@ -59,6 +60,7 @@ dependencies:
   bcrypt: registry.npmmirror.com/bcrypt/5.1.1
   class-transformer: registry.npmmirror.com/class-transformer/0.5.1
   class-validator: registry.npmmirror.com/class-validator/0.14.1
+  dayjs: registry.npmmirror.com/dayjs/1.11.10
   nestjs-prisma: registry.npmmirror.com/nestjs-prisma/0.23.0_folsr37k7j6ccnjmxs2lewqmem
   passport: registry.npmmirror.com/passport/0.7.0
   passport-jwt: registry.npmmirror.com/passport-jwt/4.0.1
@@ -2963,6 +2965,12 @@ packages:
       shebang-command: registry.npmmirror.com/shebang-command/2.0.0
       which: registry.npmmirror.com/which/2.0.2
     dev: true
+
+  registry.npmmirror.com/dayjs/1.11.10:
+    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==, registry: https://packages.aliyun.com/5f5e46046207a1a8b17fbef8/npm/npm-registry/, tarball: https://registry.npmmirror.com/dayjs/-/dayjs-1.11.10.tgz}
+    name: dayjs
+    version: 1.11.10
+    dev: false
 
   registry.npmmirror.com/debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==, registry: https://packages.aliyun.com/5f5e46046207a1a8b17fbef8/npm/npm-registry/, tarball: https://registry.npmmirror.com/debug/-/debug-2.6.9.tgz}

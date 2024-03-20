@@ -48,9 +48,10 @@ datasource db {
 // }
 
 model user {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique(map: "User_email_key")
-  username String  @unique(map: "username") @db.VarChar(100)
-  password String? @db.VarChar(100)
-  // post     post[]
+  id         Int     @id @default(autoincrement())
+  email      String? @unique(map: "User_email_key")
+  username   String  @unique(map: "username") @db.VarChar(100)
+  password   String  @db.VarChar(100)
+  created_at Int?
+  updated_at Int?
 }
