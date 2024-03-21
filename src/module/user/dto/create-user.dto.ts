@@ -1,4 +1,4 @@
-import { IsDefined, IsNotEmpty, Length } from 'class-validator'
+import { IsDefined, IsEmail, IsNotEmpty, IsOptional, Length } from 'class-validator'
 
 // create-user.dto.ts
 export class CreateUserDto {
@@ -12,7 +12,10 @@ export class CreateUserDto {
   @Length(8, 20, { message: '密码长度必须在8到20之间' })
   password: string
 
-  // createTime: Date
+  @IsEmail()
+  @IsOptional()
+  email?: string
 
-  // updateTime: Date
+  created_at?: number
+  updated_at?: number
 }

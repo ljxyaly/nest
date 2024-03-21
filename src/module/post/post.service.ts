@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common'
 // import { odr_member, Prisma } from '@prisma/client'
 import { CustomPrismaService } from 'nestjs-prisma'
-import { type ExtendedPrismaClient } from '@/common/prisma/prisma.extension'
+import { type ExtendedPrismaClient } from '@/prisma/prisma.extension'
 
 @Injectable()
 export class PostService {

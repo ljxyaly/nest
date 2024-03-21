@@ -3,10 +3,12 @@ import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 
-import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
-import { AuthService } from '@/auth/auth.service'
-import { LocalAuthGuard } from '@/auth/local-auth.guard'
+import { JwtAuthGuard } from '@/module/auth/jwt-auth.guard'
+import { AuthService } from '@/module/auth/auth.service'
+import { LocalAuthGuard } from '@/module/auth/local-auth.guard'
 import { LoginUserDto } from './dto/login-user.dto'
+import { FindOneDto } from '@/dto/findOne'
+import { FindAllDto } from '@/dto/findAll'
 import dayjs from 'dayjs'
 
 @Controller({ path: 'user', version: '1' })
@@ -21,13 +23,18 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Post('user_info')
-  async getUserInfo(@Body() body) {
-    return this.userService.findOne(body)
+  async getUserInfo(@Body() body: FindOneDto) {
+    return await this.userService.findOne(body.id)
+  }
+
+  @Post('list')
+  async getUserList(@Body() body: FindAllDto) {
+    return await this.userService.findAll(body)
   }
 
   @Post('register')
   async userRegister(@Body() body: CreateUserDto) {
-    return await this.userService.create(Object.assign(body, { created_at: dayjs().unix() }))
+    return await this.userService.create(body)
     // return await this.userService.create(Object.assign(body, { created_at: dayjs().unix() }))
   }
 
