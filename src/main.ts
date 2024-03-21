@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from '@/app.module'
 import { ValidationPipe } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
-import { TransformInterceptor } from '@/common/interceptors/transform.interceptor'
+import { TransformInterceptor } from '@/interceptor/transform.interceptor'
 
 // 重写BigInt的toJSON方法，解决Do not know how to serialize a BigInt问题
 declare global {
