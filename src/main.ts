@@ -24,7 +24,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe())
   app.useGlobalInterceptors(new TransformInterceptor())
 
-  const config = new DocumentBuilder().setTitle('api文档').setDescription('api文档').setVersion('1.0').addTag('api').build()
+  const config = new DocumentBuilder().setTitle('api文档').setDescription('api文档').setVersion('1.0').addTag('api').addBearerAuth().build()
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('api', app, document)
   await app.listen(3000)
