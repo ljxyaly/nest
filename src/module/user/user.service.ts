@@ -53,7 +53,10 @@ export class UserService {
   ) {}
 
   async create(data: Prisma.userCreateInput): Promise<user | unknown> {
-    return this.userDao.create(data)
+    const res = await this.userDao.create(data)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...returnData } = res
+    return returnData
 
     // const { username } = data
     // const user = await this.prismaService.client.user.findUnique({
@@ -83,21 +86,29 @@ export class UserService {
     // }
   }
 
-  // findAll(data: Prisma.userFindManyArgs): Promise<user[]>
-  async findAll(data): Promise<user[]> {
+  // : Prisma.userUpdateInput
+  async update(data) {
+    return this.userDao.update(data)
+  }
+
+  async findAll(data) {
     return this.userDao.findAll(data)
   }
 
-  async findOne(id) {
+  async getUserInfo(data) {
+    return this.userDao.findOne(data)
+  }
+
+  async findOne(body) {
     return this.prismaService.client.user.findUniqueOrThrow({
       where: {
-        id
-      },
-      select: {
-        id: true,
-        username: true,
-        email: true
+        id: body.id
       }
+      // select: {
+      //   id: true,
+      //   username: true,
+      //   email: true
+      // }
     })
     // const user = await this.prismaService.client.user.findUnique({
     //   where: {

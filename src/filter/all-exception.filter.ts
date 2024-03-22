@@ -41,12 +41,18 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const status = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR
 
     let data: any = {
-      message: 'default fail message'
+      message: ''
     }
 
     if (exception instanceof HttpException) {
-      data = {
-        message: exception.getResponse()['message'] ? exception.getResponse()['message'] : `${status >= 500 ? 'Service Error' : 'Client Error'}`
+      if (exception.getResponse()['message']) {
+        data = {
+          message: Array.isArray(exception.getResponse()['message']) ? exception.getResponse()['message'][0] : exception.getResponse()['message']
+        }
+      } else {
+        data = {
+          message: `${status >= 500 ? 'Service Error' : 'Client Error'}`
+        }
       }
     } else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
       data = {
@@ -66,6 +72,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
         message: 'PrismaClientValidationError',
         detail: exception.message,
         clientVersion: exception.clientVersion
+      }
+    } else {
+      data = {
+        message: exception.toString()
       }
     }
 

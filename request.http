@@ -2,21 +2,39 @@ POST http://localhost:3000/api/v1/user/register HTTP/1.1
 content-type: application/json
 
 {
-    "username": "9999999",
-    "password": "lkxkda7555",
-    "email": "11269244@qq.com"
+    "username": "ipccccc",
+    "password": "123456",
+    "email": "1269244@163.com"
 }
 
 ###
 POST http://localhost:3000/api/v1/user/user_info HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp4IiwiaWF0IjoxNzEwOTI4NzY2LCJleHAiOjE3MTEwMTUxNjZ9.wSOLDWa3_vsZkFBqTHsVQIoiLdQxeFlZ-nL0VDhjLvw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp4IiwiaWQiOjEsImVtYWlsIjoiMTEyNjkyNTQ0OUAxNjMuY29tIiwiY3JlYXRlZF9hdCI6bnVsbCwidXBkYXRlZF9hdCI6MTcxMTA5NDI5OSwiaWF0IjoxNzExMTAxMDAyLCJleHAiOjE3MTExODc0MDJ9.pPDXK9NT_V0fQhNTPQtWGFZRnMP4J5I-yqfbtrNEWTA
+
+{}
+
+###
+POST http://localhost:3000/api/v1/user/list HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp4IiwiaWF0IjoxNzExMDkwMjUzLCJleHAiOjE3MTExNzY2NTN9.CxEYM3LZ0qL05B7mvxOTGHgcd73E2UPQMVPIKQBS6n0
 
 {
-    "id": 150,
-    "cc": "66"
+    "page": 1,
+    "limit": 20
 }
 
+
+###
+POST http://localhost:3000/api/v1/user/edit HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp4IiwiaWF0IjoxNzExMDkwMjUzLCJleHAiOjE3MTExNzY2NTN9.CxEYM3LZ0qL05B7mvxOTGHgcd73E2UPQMVPIKQBS6n0
+
+{
+    "id": 1,
+    "username": "99999999999999",
+    "email": "1126925449@163.com"
+}
 
 
 
