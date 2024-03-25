@@ -10,11 +10,22 @@ import { extendedPrismaClient } from '@/prisma/prisma.extension'
 import { providePrismaClientExceptionFilter } from 'nestjs-prisma'
 import { APP_FILTER } from '@nestjs/core'
 import { AllExceptionsFilter } from '@/filter/all-exception.filter'
+import { SequelizeModule } from '@nestjs/sequelize'
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true
+    }),
+    SequelizeModule.forRoot({
+      dialect: 'mysql',
+      host: '127.0.0.1',
+      port: 3306,
+      username: 'root',
+      password: 'root',
+      database: 'test',
+      autoLoadModels: true,
+      synchronize: true
     }),
     CustomPrismaModule.forRootAsync({
       name: 'PrismaService',
