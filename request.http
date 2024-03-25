@@ -2,9 +2,18 @@ POST http://localhost:3000/api/v1/user/register HTTP/1.1
 content-type: application/json
 
 {
-    "username": "ipccccc",
+    "username": "ipc89",
     "password": "123456",
-    "email": "1269244@163.com"
+    "email": "126928777@163.com"
+}
+
+###
+POST http://localhost:3000/api/v1/user/login HTTP/1.1
+content-type: application/json
+
+{
+  "username": "jx",
+  "password": "123456"
 }
 
 ###
@@ -20,20 +29,18 @@ content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp4IiwiaWF0IjoxNzExMDkwMjUzLCJleHAiOjE3MTExNzY2NTN9.CxEYM3LZ0qL05B7mvxOTGHgcd73E2UPQMVPIKQBS6n0
 
 {
-    "page": 1,
-    "limit": 20
+  "page": 1,
+  "limit": 2
 }
 
 
 ###
 POST http://localhost:3000/api/v1/user/edit HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp4IiwiaWF0IjoxNzExMDkwMjUzLCJleHAiOjE3MTExNzY2NTN9.CxEYM3LZ0qL05B7mvxOTGHgcd73E2UPQMVPIKQBS6n0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp4IiwiaWQiOjEsImVtYWlsIjoiMTEyNjkyNTQ0OUAxNjMuY29tIiwiY3JlYXRlZF9hdCI6bnVsbCwidXBkYXRlZF9hdCI6MTcxMTA5NDI5OSwiaWF0IjoxNzExMzUzNDgyLCJleHAiOjE3MTE0Mzk4ODJ9.2Zgyva2Bm7UB4qiGrKI48ELFEk0ztSoptjAQbrcPm10
 
 {
-    "id": 1,
-    "username": "99999999999999",
-    "email": "1126925449@163.com"
+    "username": "789152"
 }
 
 

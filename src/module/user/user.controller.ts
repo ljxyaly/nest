@@ -31,8 +31,9 @@ export class UserController {
   }
 
   @Post('list')
-  async getUserList(@Body() body: GetUserListDto) {
-    return await this.userService.findAll(body)
+  // @Body() body: GetUserListDto
+  async getUserList(data) {
+    return await this.userService.findAll(data)
   }
 
   @Post('register')
@@ -44,7 +45,8 @@ export class UserController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('edit')
-  async update(@Body() body: UpdateUserDto) {
+  // @Body() body: UpdateUserDto
+  async update(body) {
     return await this.userService.update(body)
   }
 }

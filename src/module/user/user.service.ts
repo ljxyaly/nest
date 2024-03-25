@@ -41,22 +41,27 @@ import { type ExtendedPrismaClient } from '@/prisma/prisma.extension'
 import { ErrorCode } from '@/constant/error.constant'
 import { UserDao } from './user.dao'
 import dayjs from 'dayjs'
+import { InjectModel } from '@nestjs/sequelize'
+import { UserModel } from './user.model'
 
 export type User = any
 
 @Injectable()
 export class UserService {
   constructor(
+    @InjectModel(UserModel) private userModel: typeof UserModel,
     @Inject('PrismaService')
     private prismaService: CustomPrismaService<ExtendedPrismaClient>,
     private readonly userDao: UserDao
   ) {}
-
-  async create(data: Prisma.userCreateInput): Promise<user | unknown> {
-    const res = await this.userDao.create(data)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...returnData } = res
-    return returnData
+  // data: Prisma.userCreateInput): Promise<user | unknown>
+  async create(data) {
+    const a = await this.userModel.create(data)
+    return a
+    // const res = await this.userDao.create(data)
+    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // const { password, ...returnData } = res
+    // return returnData
 
     // const { username } = data
     // const user = await this.prismaService.client.user.findUnique({
@@ -88,11 +93,20 @@ export class UserService {
 
   // : Prisma.userUpdateInput
   async update(data) {
-    return this.userDao.update(data)
+    // return this.userDao.update(data)
+    return await this.userModel.update(data, { where: { id: 3 } })
   }
 
   async findAll(data) {
-    return this.userDao.findAll(data)
+    const a = await this.userModel.findAll({
+      offset: 2,
+      limit: 10,
+      attributes: {
+        exclude: ['password']
+      }
+    })
+    console.log(a.length)
+    return a
   }
 
   async getUserInfo(data) {
