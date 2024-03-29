@@ -3,6 +3,7 @@ import { AppModule } from '@/app.module'
 import { ValidationPipe } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { TransformInterceptor } from '@/interceptor/transform.interceptor'
+// import { ConfigService } from '@nestjs/config'
 
 // 重写BigInt的toJSON方法，解决Do not know how to serialize a BigInt问题
 declare global {
@@ -23,7 +24,8 @@ async function bootstrap() {
   app.enableVersioning()
   app.useGlobalPipes(new ValidationPipe())
   app.useGlobalInterceptors(new TransformInterceptor())
-
+  // const configService = app.get(ConfigService)
+  // console.log(configService.get('JWT_SECRET'))
   const config = new DocumentBuilder().setTitle('api文档').setDescription('api文档').setVersion('1.0').addTag('api').addBearerAuth().build()
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('api', app, document)

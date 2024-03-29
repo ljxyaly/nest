@@ -1,4 +1,4 @@
-import { Column, Model, Table, DataType, CreatedAt, UpdatedAt, DeletedAt } from 'sequelize-typescript'
+import { Column, Model, Table, CreatedAt, UpdatedAt, DeletedAt } from 'sequelize-typescript'
 
 @Table({ tableName: 'user', underscored: false })
 export class UserModel extends Model {

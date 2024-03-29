@@ -2,7 +2,7 @@ import { IsDefined, IsEmail, IsNotEmpty, IsNumber, IsOptional, Length } from 'cl
 import { ApiProperty } from '@nestjs/swagger'
 import { PartialType } from '@nestjs/mapped-types'
 
-export class CreateUserDto {
+export class UserCreateDto {
   @IsDefined()
   @IsNotEmpty()
   @Length(4, 20, { message: '用户名长度必须在4到20之间' })
@@ -21,7 +21,7 @@ export class CreateUserDto {
   updated_at: number
 }
 
-export class GetUserListDto {
+export class UserListDto {
   @IsNotEmpty()
   @IsNumber()
   page: number
@@ -31,7 +31,7 @@ export class GetUserListDto {
   limit: number
 }
 
-export class LoginUserDto {
+export class UserLoginDto {
   @ApiProperty({
     description: '用户名',
     default: 'jx'
@@ -47,16 +47,16 @@ export class LoginUserDto {
   password: string
 }
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {
+export class UserUpdateDto extends PartialType(UserCreateDto) {
   @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
   id: number
 }
 
-export class GetUserInfoDto {
-  @ApiProperty()
-  @IsDefined()
-  @IsNotEmpty()
-  id: number
-}
+// export class UserDetailDto {
+//   @ApiProperty()
+//   @IsDefined()
+//   @IsNotEmpty()
+//   id: number
+// }

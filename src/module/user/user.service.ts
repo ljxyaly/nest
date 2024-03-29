@@ -34,13 +34,7 @@
 //   }
 // }
 
-import { Injectable, Inject, NotFoundException, HttpException } from '@nestjs/common'
-import { user, Prisma } from '@prisma/client'
-import { CustomPrismaService } from 'nestjs-prisma'
-import { type ExtendedPrismaClient } from '@/prisma/prisma.extension'
-import { ErrorCode } from '@/constant/error.constant'
-import { UserDao } from './user.dao'
-import dayjs from 'dayjs'
+import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 import { UserModel } from './user.model'
 
@@ -49,101 +43,50 @@ export type User = any
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(UserModel) private userModel: typeof UserModel,
-    @Inject('PrismaService')
-    private prismaService: CustomPrismaService<ExtendedPrismaClient>,
-    private readonly userDao: UserDao
+    @InjectModel(UserModel)
+    private userModel: typeof UserModel
   ) {}
-  // data: Prisma.userCreateInput): Promise<user | unknown>
   async create(data) {
-    const a = await this.userModel.create(data)
-    return a
-    // const res = await this.userDao.create(data)
-    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // const { password, ...returnData } = res
-    // return returnData
-
-    // const { username } = data
-    // const user = await this.prismaService.client.user.findUnique({
-    //   where: {
-    //     username
-    //   },
-    //   select: {
-    //     id: true,
-    //     username: true,
-    //     email: true
-    //   }
-    // })
-    // if (user) {
-    //   return ErrorCode[990001]
-    // } else {
-    //   console.log(data)
-    //   try {
-    //     const res = await this.prismaService.client.user.create({ data, select: { id: true, username: true, email: true } })
-    //   } catch (error) {
-    //     console.log(error)
-    //     return ErrorCode[990002]
-    //   }
-
-    //   // return {
-    //   //   data: res
-    //   // }
-    // }
+    return this.userModel.create(data)
   }
 
-  // : Prisma.userUpdateInput
   async update(data) {
-    // return this.userDao.update(data)
-    return await this.userModel.update(data, { where: { id: 3 } })
+    const { id, ..._data } = data
+    return this.userModel.update(_data, { where: { id } })
   }
 
   async findAll(data) {
-    const a = await this.userModel.findAll({
-      offset: 2,
-      limit: 10,
+    const { page, limit } = data
+    const { count, rows } = await this.userModel.findAndCountAll({
+      offset: (page - 1) * limit,
+      limit,
       attributes: {
         exclude: ['password']
       }
     })
-    console.log(a.length)
-    return a
+    return {
+      list: rows,
+      total: count,
+      page,
+      limit
+    }
   }
 
-  async getUserInfo(data) {
-    return this.userDao.findOne(data)
-  }
-
-  async findOne(body) {
-    return this.prismaService.client.user.findUniqueOrThrow({
+  async findOne(data) {
+    const { id } = data
+    return this.userModel.findOne({
       where: {
-        id: body.id
+        id
+      },
+      attributes: {
+        exclude: ['password']
       }
-      // select: {
-      //   id: true,
-      //   username: true,
-      //   email: true
-      // }
     })
-    // const user = await this.prismaService.client.user.findUnique({
-    //   where: {
-    //     id
-    //   },
-    //   select: {
-    //     id: true,
-    //     username: true,
-    //     email: true
-    //   }
-    // })
-    // if (!user) {
-    //   return ErrorCode[990002]
-    // } else {
-    //   return {
-    //     data: user
-    //   }
-    // }
   }
-  async authFindOne(username: string): Promise<User | undefined> {
-    return await this.prismaService.client.user.findUnique({
+
+  async authFindOne(data) {
+    const { username } = data
+    return this.userModel.findOne({
       where: {
         username
       }

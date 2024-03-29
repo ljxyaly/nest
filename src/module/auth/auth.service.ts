@@ -3,14 +3,13 @@ import { UserService } from '@/module/user/user.service'
 import { JwtService } from '@nestjs/jwt'
 import * as bcrypt from 'bcrypt'
 import { ConfigService } from '@nestjs/config'
-import { create } from 'domain'
 
 @Injectable()
 export class AuthService {
   constructor(private jwtService: JwtService, private configService: ConfigService, private userService: UserService) {}
 
   async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.userService.authFindOne(username)
+    const user = await this.userService.authFindOne({ username })
     if (!user) return null
     const { password: db_password } = user
     const isMatch = await bcrypt.compare(password, db_password)

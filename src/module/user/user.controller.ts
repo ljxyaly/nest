@@ -3,7 +3,7 @@ import { UserService } from './user.service'
 import { JwtAuthGuard } from '@/module/auth/jwt-auth.guard'
 import { AuthService } from '@/module/auth/auth.service'
 import { LocalAuthGuard } from '@/module/auth/local-auth.guard'
-import { LoginUserDto, CreateUserDto, GetUserInfoDto, GetUserListDto, UpdateUserDto } from './user.dto'
+import { UserLoginDto, UserCreateDto, UserListDto, UserUpdateDto } from './user.dto'
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 
 @ApiTags('用户')
@@ -13,40 +13,32 @@ export class UserController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async userLogin(@Body() body: LoginUserDto) {
+  async login(@Body() body: UserLoginDto) {
     return this.authService.login(body)
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post('user_info')
-  // async getUserInfo(@Body() body: GetUserInfoDto) {
-  //   return await this.userService.findOne(body)
-  // }
-  async getUserInfo(@Request() req: any) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // const { iat, exp, ...user } = req.user
-    // return user
-    return await this.userService.getUserInfo({ id: req.user.id })
+  @Post('detail')
+  async detail(@Request() req: any) {
+    console.log(req.user)
+    return await this.userService.findOne({ id: req.user.id })
   }
 
   @Post('list')
-  // @Body() body: GetUserListDto
-  async getUserList(data) {
-    return await this.userService.findAll(data)
+  async list(@Body() body: UserListDto) {
+    return this.userService.findAll(body)
   }
 
   @Post('register')
-  async userRegister(@Body() body: CreateUserDto) {
+  async register(@Body() body: UserCreateDto) {
     return await this.userService.create(body)
   }
 
-  // @Version('2')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post('edit')
-  // @Body() body: UpdateUserDto
-  async update(body) {
+  @Post('update')
+  async update(@Body() body: UserUpdateDto) {
     return await this.userService.update(body)
   }
 }
