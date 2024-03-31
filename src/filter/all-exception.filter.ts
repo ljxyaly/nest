@@ -14,7 +14,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     let data: any = {
       message: ''
     }
-
+    console.log(exception)
     if (exception instanceof HttpException) {
       if (exception.getResponse()['message']) {
         data = {

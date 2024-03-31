@@ -37,6 +37,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 import { UserModel } from './user.model'
+import { ConfigService } from '@nestjs/config'
+import * as bcrypt from 'bcrypt'
 
 export type User = any
 
@@ -44,10 +46,12 @@ export type User = any
 export class UserService {
   constructor(
     @InjectModel(UserModel)
-    private userModel: typeof UserModel
+    private userModel: typeof UserModel,
+    private configService: ConfigService
   ) {}
   async create(data) {
-    return this.userModel.create(data)
+    const bcrypt_password = await bcrypt.hash(data.password, Number(this.configService.get('BCRYPT_HASH_ROUNDS')))
+    return this.userModel.create({ ...data, password: bcrypt_password })
   }
 
   async update(data) {

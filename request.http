@@ -2,7 +2,7 @@ POST http://localhost:3000/api/v1/user/register HTTP/1.1
 content-type: application/json
 
 {
-    "username": "ipc89",
+    "username": "ljxyaly",
     "password": "123456",
     "email": "126928777@163.com"
 }
@@ -43,8 +43,50 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp4I
     "username": "789152"
 }
 
+###
+POST http://localhost:3000/api/v1/tag/list HTTP/1.1
+content-type: application/json
 
+{
+  "page": 1,
+  "limit": 20
+}
 
+###
+POST http://localhost:3000/api/v1/tag/create HTTP/1.1
+content-type: application/json
+
+{
+  "name": "标签2",
+  "alias": "标签别名1",
+  "remark": "备注1"
+}
+
+### 
+POST http://localhost:3000/api/v1/tag/detail HTTP/1.1
+content-type: application/json
+
+{
+  "id": 1
+}
+
+### 
+POST http://localhost:3000/api/v1/tag/update HTTP/1.1
+content-type: application/json
+
+{
+  "name": "标签1",
+  "alias": "标签别名1",
+  "remark": "备注1"
+}
+
+### 
+POST http://localhost:3000/api/v1/tag/delete HTTP/1.1
+content-type: application/json
+
+{
+  "id": 1
+}
 
 
 # CONTINUE = 100,

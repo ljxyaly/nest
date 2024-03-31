@@ -1,6 +1,6 @@
 import { Column, Model, Table, CreatedAt, UpdatedAt, DeletedAt } from 'sequelize-typescript'
 
-@Table({ tableName: 'user', underscored: false })
+@Table({ tableName: 'bl_user', underscored: false })
 export class UserModel extends Model {
   @Column({ primaryKey: true, autoIncrement: true })
   id: number
