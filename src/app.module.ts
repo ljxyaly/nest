@@ -1,11 +1,14 @@
-import { Module } from '@nestjs/common'
+import { Module, ValidationPipe } from '@nestjs/common'
 import { AppController } from '@/app.controller'
 import { AppService } from '@/app.service'
 import { ConfigModule } from '@nestjs/config'
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { AllExceptionsFilter } from '@/filter/all-exception.filter'
 import { TransformInterceptor } from '@/interceptor/transform.interceptor'
 import { SequelizeModule } from '@nestjs/sequelize'
+import { ErrorException } from '@/filter/error-exception.filter'
+import { ErrorCode } from '@/filter/error-code'
+import * as _ from 'lodash'
 import { AuthModule } from '@/module/auth/auth.module'
 import { UserModule } from '@/module/user/user.module'
 import { TagModule } from '@/module/tag/tag.module'
@@ -45,6 +48,20 @@ import { CategoryModule } from '@/module/category/category.module'
     {
       provide: APP_INTERCEPTOR,
       useClass: TransformInterceptor
+    },
+    // 全局参数校验 pipe
+    {
+      provide: APP_PIPE,
+      useFactory: () =>
+        new ValidationPipe({
+          transform: true,
+          exceptionFactory: (errors) =>
+            new ErrorException(
+              Object.assign({}, ErrorCode['990001'], {
+                data: _.flatten(errors.filter((item) => !!item.constraints).map((item) => Object.values(item.constraints)))
+              })
+            )
+        })
     }
   ]
 })
