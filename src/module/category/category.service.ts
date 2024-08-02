@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize'
 import { CategoryModel } from './category.model'
 import { ErrorException } from '@/filter/error-exception.filter'
 import { ErrorCode } from '@/filter/error-code'
+// import axios from 'axios'
 
 @Injectable()
 export class CategoryService {
@@ -41,6 +42,14 @@ export class CategoryService {
       offset: (page - 1) * limit,
       limit
     })
+
+    // const res =  await axios.post('https://who.cx/whois', {
+    //   domain: 'google.com'
+    // });
+    // return {
+    //   list: res.data
+    // }
+    // console.log(res.data.data)
     return {
       list: rows,
       total: count,
